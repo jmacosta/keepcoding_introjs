@@ -33,6 +33,12 @@ const datos = [
   },
 ];
 
+const desarrolladoresJavascript = datos.filter((dato) =>
+  dato.habilidades.includes("JavaScript")
+);
+
+console.log(desarrolladoresJavascript);
+
 /* resultado final esperado 
 
 
