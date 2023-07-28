@@ -5,4 +5,8 @@ export const listPlayers = [
   "Eduardo Aguilar",
 ];
 export const scoreSystem = [0, 15, 30, 40, "Ganas"];
-export const MAX_ROUND = 7;
+export const settings = {
+  MAX_ROUND: 7,
+  WIN_ROUND: 4,
+  DIFERENCE_BETWEEN_ROUNDS: 2,
+};
