@@ -33,42 +33,57 @@ function createMatch(
       advantage: false,
     },
   };
-  let winner = "yo";
+  let winner = "";
+  let currentRoundScore = "";
 
   const pointWonBy = (playerId) => {
-    // pending feats
     if (playerId === 1 || playerId === 2) {
       players["id_" + playerId].roundScore++;
+      // Score < 40 - 40
+      if (
+        players.id_1.roundScore <= scoreSystem.length - 2 ||
+        players.id_2.roundScore <= scoreSystem.length - 2
+      ) {
+        currentRoundScore = `${players.id_1.name} ${
+          scoreSystem[players.id_1.roundScore]
+        } - ${players.id_2.name} ${scoreSystem[players.id_2.roundScore]}`;
+      } else {
+        if (currentRoundScore != "deuce") {
+          currentRoundScore = "deuce";
+          // if (players.id_1.advantage) {
+          //   currentRoundScore = "advantage " + players.id_1.name;
+          // } else if (players.id_2.advantage) {
+          //   currentRoundScore = "advantage " + players.id_2.name;
+          // }
+        } else {
+          if (!players.id_1.advantage && !players.id_2.advantage) {
+            players["id_" + playerId].advantage = true;
+            currentRoundScore = "advantage " + players["id_" + playerId].name;
+          }
+        }
+      }
+
+      if (
+        players.id_1.roundScore === scoreSystem.length - 1 &&
+        players.id_2.roundScore === scoreSystem.length - 1
+      ) {
+        if (players.id_1.advantage) {
+          currentRoundScore = "advantage " + players.id_1.name;
+        } else if (players.id_2.advantage) {
+          currentRoundScore = "advantage " + players.id_2.name;
+        }
+      }
     }
   };
   const getCurrentRoundScore = () => {
-    let result = "";
-    if (
-      players.id_1.roundScore < scoreSystem.length - 2 ||
-      players.id_2.roundScore < scoreSystem.length - 2
-    ) {
-      result = `${players.id_1.name} ${
-        scoreSystem[players.id_1.roundScore]
-      } - ${players.id_2.name} ${scoreSystem[players.id_2.roundScore]}`;
-    } else if (
-      (players.id_1.roundScore <= scoreSystem.length - 1 &&
-        players.id_2.roundScore <= scoreSystem.length - 1 &&
-        players.id_1.advantage) ||
-      players.id_2.advantage
-    ) {
-      result = "deuce";
-    } else if (players.id_1.advantage) {
-      result = "advantage " + players.id_1.name;
-    } else {
-      result = "advantage " + players.id_2.name;
-    }
-    return result;
+    return currentRoundScore;
   };
   const resetScore = () => {
     players.id_1.roundScore = 0;
     players.id_2.roundScore = 0;
     players.id_1.advantage = false;
     players.id_2.advantage = false;
+    currentRoundScore = "";
   };
   const getGameScore = () => {
     return (
@@ -114,6 +129,7 @@ game.pointWonBy(1);
 game.pointWonBy(2);
 game.pointWonBy(2);
 game.pointWonBy(2);
+game.pointWonBy(1);
 console.log(game.getCurrentRoundScore());
 
 console.log(`The winner is ${game.getWinner()}`);
