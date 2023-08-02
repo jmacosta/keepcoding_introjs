@@ -73,8 +73,9 @@ function createMatch(
             players[players["id_" + playerId].opponent].roundScore--;
             currentRoundScore = "deuce";
           } else {
-            // to do player win the game
-            currentRoundScore = "Gano Juego";
+            // to do player win 4 or more rounds
+            players["id_" + playerId].gameScore++;
+            resetRoundScore();
           }
         }
     }
@@ -83,12 +84,17 @@ function createMatch(
   const getCurrentRoundScore = () => {
     return currentRoundScore;
   };
-  const resetScore = () => {
+  const resetRoundScore = () => {
     players.id_1.roundScore = 0;
     players.id_2.roundScore = 0;
     players.id_1.advantage = false;
     players.id_2.advantage = false;
     currentRoundScore = "";
+  };
+  const resetGameScore = () => {
+    players.id_1.gameScore = 0;
+    players.id_2.gameScore = 0;
+    resetRoundScore();
   };
   const getGameScore = () => {
     return (
