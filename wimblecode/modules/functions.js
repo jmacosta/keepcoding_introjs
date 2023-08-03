@@ -4,19 +4,15 @@ const listPlayers = [
   "Javier de Miguel",
   "Eduardo Aguilar",
 ];
-const scoreSystemDefault = [0, 15, 30, 40];
+
 const settingsDefault = {
   MAX_ROUND: 7,
   WIN_ROUND: 4,
   DIFERENCE_BETWEEN_ROUNDS: 2,
+  SCORE_SYSTEM: [0, 15, 30, 40],
 };
 
-function createMatch(
-  player_1,
-  player_2,
-  scoreSystem = scoreSystemDefault,
-  settings = settingsDefault
-) {
+function createMatch(player_1, player_2, settings = settingsDefault) {
   let players = {
     id_1: {
       name: player_1,
@@ -37,30 +33,39 @@ function createMatch(
   };
   let winner = "";
   let currentRoundScore = "";
+  const { SCORE_SYSTEM: scoreSystem } = settings;
 
   const pointWonBy = (playerId) => {
     if (playerId === 1 || playerId === 2) {
       players["id_" + playerId].roundScore++;
-      // Score < 40 - 40
-      if (
-        players.id_1.roundScore <= scoreSystem.length - 2 ||
-        players.id_2.roundScore <= scoreSystem.length - 2
-      ) {
-        currentRoundScore = `${players.id_1.name} ${
-          scoreSystem[players.id_1.roundScore]
-        } - ${players.id_2.name} ${scoreSystem[players.id_2.roundScore]}`;
-      }
-
       if (
         players.id_1.roundScore === scoreSystem.length - 1 &&
         players.id_2.roundScore === scoreSystem.length - 1
       ) {
         return (currentRoundScore = "deuce");
       }
-      if (
-        players.id_1.roundScore > scoreSystem.length - 1 ||
-        players.id_2.roundScore > scoreSystem.length - 1
-      )
+      // Score < 40 - 40
+      if (players["id_" + playerId].roundScore < scoreSystem.length) {
+        return (currentRoundScore = `${players.id_1.name} ${
+          scoreSystem[players.id_1.roundScore]
+        } - ${players.id_2.name} ${
+          scoreSystem[players.id_2.roundScore]
+        } la scores es ${players["id_" + playerId].roundScore}`);
+      }
+
+      if (currentRoundScore == "deuce") {
+        players["id_" + playerId].advantage = true;
+
+        return (currentRoundScore = `Advantage ${
+          players["id_" + playerId].name
+        }`);
+      }
+      if (players["id_" + playerId].roundScore > scoreSystem.length - 1) {
+        players["id_" + playerId].gameScore++;
+        resetRoundScore();
+      }
+
+      if (players["id_" + playerId] > scoreSystem.length - 1)
         if (!players.id_1.advantage && !players.id_2.advantage) {
           players["id_" + playerId].advantage = true;
           currentRoundScore = `Advantage ${players["id_" + playerId].name}`;
@@ -143,17 +148,32 @@ game.pointWonBy(1);
 console.log(game.getCurrentRoundScore()); // 30-0
 game.pointWonBy(1);
 console.log(game.getCurrentRoundScore()); // 40-0
+game.pointWonBy(1);
+console.log(game.getCurrentRoundScore()); // Jugador A Gana Juego
+console.log(game.getGameScore());
+game.pointWonBy(2);
+console.log(game.getCurrentRoundScore()); // 0-15
+game.pointWonBy(2);
+console.log(game.getCurrentRoundScore()); // 0-30
+game.pointWonBy(2);
+console.log(game.getCurrentRoundScore()); // 0-40
+game.pointWonBy(1);
+console.log(game.getCurrentRoundScore()); // 15-40
+game.pointWonBy(2);
+console.log(game.getCurrentRoundScore()); // Jugador B gana
+console.log(game.getGameScore());
+game.pointWonBy(1);
+console.log(game.getCurrentRoundScore()); // 15-0
+game.pointWonBy(1);
+console.log(game.getCurrentRoundScore()); // 30-0
+game.pointWonBy(1);
+console.log(game.getCurrentRoundScore()); // 40-0
 game.pointWonBy(2);
 console.log(game.getCurrentRoundScore()); // 40-15
 game.pointWonBy(2);
 console.log(game.getCurrentRoundScore()); // 40-30
 game.pointWonBy(2);
-console.log(game.getCurrentRoundScore()); // Deuce
-game.pointWonBy(1);
-console.log(game.getCurrentRoundScore()); // advantage player 1
-game.pointWonBy(2);
 console.log(game.getCurrentRoundScore()); // deuce
-game.pointWonBy(1);
-console.log(game.getCurrentRoundScore()); // advantage player 1
-game.pointWonBy(1);
-console.log(game.getCurrentRoundScore()); // gano juego
+game.pointWonBy(2);
+console.log(game.getCurrentRoundScore()); // advantage 2
+game.debugPlayers();
