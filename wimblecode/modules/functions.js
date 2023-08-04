@@ -59,7 +59,7 @@ function createMatch(player_1, player_2, settings = settingsDefault) {
         return winRoundScore(playerId);
       }
 
-      // to do managment avantage of players
+      // to do management avantage of players
 
       // if (currentRoundScore == "deuce") {
       //   players["id_" + playerId].advantage = true;
