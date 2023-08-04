@@ -38,12 +38,6 @@ function createMatch(player_1, player_2, settings = settingsDefault) {
   const pointWonBy = (playerId) => {
     if (playerId === 1 || playerId === 2) {
       players["id_" + playerId].roundScore++;
-      if (
-        players.id_1.roundScore === scoreSystem.length - 1 &&
-        players.id_2.roundScore === scoreSystem.length - 1
-      ) {
-        return (currentRoundScore = "deuce");
-      }
       // Score < 40 - 40
       if (players["id_" + playerId].roundScore < scoreSystem.length) {
         return (currentRoundScore = `${players.id_1.name} ${
@@ -52,37 +46,51 @@ function createMatch(player_1, player_2, settings = settingsDefault) {
           scoreSystem[players.id_2.roundScore]
         } la scores es ${players["id_" + playerId].roundScore}`);
       }
-
-      if (currentRoundScore == "deuce") {
-        players["id_" + playerId].advantage = true;
-
-        return (currentRoundScore = `Advantage ${
-          players["id_" + playerId].name
-        }`);
+      if (
+        players[players["id_" + playerId].opponent].roundScore ===
+        scoreSystem.length - 1
+      ) {
+        return (currentRoundScore = "deuce");
       }
-      if (players["id_" + playerId].roundScore > scoreSystem.length - 1) {
-        players["id_" + playerId].gameScore++;
-        resetRoundScore();
+      if (
+        players[players["id_" + playerId].opponent].roundScore <
+        scoreSystem.length - 1
+      ) {
+        return winRoundScore(playerId);
       }
 
-      if (players["id_" + playerId] > scoreSystem.length - 1)
-        if (!players.id_1.advantage && !players.id_2.advantage) {
-          players["id_" + playerId].advantage = true;
-          currentRoundScore = `Advantage ${players["id_" + playerId].name}`;
-        } else {
-          if (!players["id_" + playerId].advantage) {
-            //the opponent loose advantage
-            players[players["id_" + playerId].opponent].advantage = false;
-            // reset state to deuce
-            players["id_" + playerId].roundScore--;
-            players[players["id_" + playerId].opponent].roundScore--;
-            currentRoundScore = "deuce";
-          } else {
-            // to do player win 4 or more rounds
-            players["id_" + playerId].gameScore++;
-            resetRoundScore();
-          }
-        }
+      // to do managment avantage of players
+
+      // if (currentRoundScore == "deuce") {
+      //   players["id_" + playerId].advantage = true;
+
+      //   return (currentRoundScore = `Advantage ${
+      //     players["id_" + playerId].name
+      //   }`);
+      // }
+      // if (players["id_" + playerId].roundScore > scoreSystem.length - 1) {
+      //   players["id_" + playerId].gameScore++;
+      //   resetRoundScore();
+      // }
+
+      // if (players["id_" + playerId] > scoreSystem.length - 1)
+      //   if (!players.id_1.advantage && !players.id_2.advantage) {
+      //     players["id_" + playerId].advantage = true;
+      //     currentRoundScore = `Advantage ${players["id_" + playerId].name}`;
+      //   } else {
+      //     if (!players["id_" + playerId].advantage) {
+      //       //the opponent loose advantage
+      //       players[players["id_" + playerId].opponent].advantage = false;
+      //       // reset state to deuce
+      //       players["id_" + playerId].roundScore--;
+      //       players[players["id_" + playerId].opponent].roundScore--;
+      //       currentRoundScore = "deuce";
+      //     } else {
+      //       // to do player win 4 or more rounds
+      //       players["id_" + playerId].gameScore++;
+      //       resetRoundScore();
+      //     }
+      //   }
     }
   };
 
@@ -100,6 +108,13 @@ function createMatch(player_1, player_2, settings = settingsDefault) {
     players.id_1.gameScore = 0;
     players.id_2.gameScore = 0;
     resetRoundScore();
+  };
+  const winRoundScore = (playerId) => {
+    players["id_" + playerId].gameScore++;
+    resetRoundScore();
+    return (currentRoundScore = `${
+      players["id_" + playerId].name
+    } win this round`);
   };
   const getGameScore = () => {
     return (
