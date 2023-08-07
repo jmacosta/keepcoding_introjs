@@ -4,9 +4,11 @@ export const listPlayers = [
   "Javier de Miguel",
   "Eduardo Aguilar",
 ];
-export const scoreSystem = [0, 15, 30, 40, "Ganas"];
-export const settings = {
-  MAX_ROUND: 7,
-  WIN_ROUND: 4,
-  DIFERENCE_BETWEEN_ROUNDS: 2,
+
+export const settingsDefault = {
+  MAX_GAMES_TO_WIN: 7, //Maximun number os games needed to win a set
+  GAMES_TO_WIN_SET: 4, //Minimun games needed to win a set
+  DIFERENCE_GAMES_BETWEEN_PLAYERS: 2, // Diference between player's games for a minimun victory
+  SET_TO_WIN_MATCH: 2, // Sets needed for win a match
+  SCORE_SYSTEM: [0, 15, 30, 40], // System of puntuation
 };
