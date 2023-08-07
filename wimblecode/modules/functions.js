@@ -1,19 +1,5 @@
-const listPlayers = [
-  "Alberto Casero",
-  "David Jiménez",
-  "Javier de Miguel",
-  "Eduardo Aguilar",
-];
-
-const settingsDefault = {
-  MAX_GAMES_TO_WIN: 7, //Maximun number os games needed to win a set
-  GAMES_TO_WIN_SET: 4, //Minimun games needed to win a set
-  DIFERENCE_GAMES_BETWEEN_PLAYERS: 2, // Diference between player's games for a minimun victory
-  SET_TO_WIN_MATCH: 2, // Sets needed for win a match
-  SCORE_SYSTEM: [0, 15, 30, 40], // System of puntuation
-};
-
-function createMatch(player_1, player_2, settings = settingsDefault) {
+import { settingsDefault } from "./data.js";
+export function createMatch(player_1, player_2, settings = settingsDefault) {
   let players = {
     id_1: {
       name: player_1,
@@ -144,8 +130,7 @@ function createMatch(player_1, player_2, settings = settingsDefault) {
     return winner;
   };
   const debugPlayers = () => {
-    console.log(players);
-    return;
+    return console.log(players);
   };
   return {
     pointWonBy,
@@ -157,49 +142,19 @@ function createMatch(player_1, player_2, settings = settingsDefault) {
   };
 }
 
-const game = createMatch(listPlayers[0], listPlayers[1]);
-game.pointWonBy(1);
-console.log(game.getCurrentRoundScore()); // 15-0
-game.pointWonBy(1);
-console.log(game.getCurrentRoundScore()); // 30-0
-game.pointWonBy(1);
-console.log(game.getCurrentRoundScore()); // 40-0
-game.pointWonBy(1);
-console.log(game.getCurrentRoundScore()); // Jugador A Gana Juego
-console.log(game.getGameScore());
-game.pointWonBy(2);
-console.log(game.getCurrentRoundScore()); // 0-15
-game.pointWonBy(2);
-console.log(game.getCurrentRoundScore()); // 0-30
-game.pointWonBy(2);
-console.log(game.getCurrentRoundScore()); // 0-40
-game.pointWonBy(1);
-console.log(game.getCurrentRoundScore()); // 15-40
-game.pointWonBy(2);
-console.log(game.getCurrentRoundScore()); // Jugador B gana
-console.log(game.getGameScore());
-game.pointWonBy(1);
-console.log(game.getCurrentRoundScore()); // 15-0
-game.pointWonBy(1);
-console.log(game.getCurrentRoundScore()); // 30-0
-game.pointWonBy(1);
-console.log(game.getCurrentRoundScore()); // 40-0
-game.pointWonBy(2);
-console.log(game.getCurrentRoundScore()); // 40-15
-game.pointWonBy(2);
-console.log(game.getCurrentRoundScore()); // 40-30
-game.pointWonBy(2);
-console.log(game.getCurrentRoundScore()); // deuce
-game.pointWonBy(2);
-console.log(game.getCurrentRoundScore()); // advantage 2
-game.pointWonBy(1);
-console.log(game.getCurrentRoundScore()); // loose advantage
-
-game.pointWonBy(1);
-console.log(game.getCurrentRoundScore()); // advantage 1
-console.log("debe de estar en blanco " + game.getWinner());
-game.pointWonBy(1);
-console.log(game.getCurrentRoundScore()); // player 1 win game
-console.log("este es el ganador " + game.getWinner());
-
-game.debugPlayers();
+export const playOff = (listPlayers) => {
+  const matchPlayers = [];
+  for (let i = 0; i < listPlayers.length / 2; i++) {
+    for (let j = 0; j < 2; j++) {
+      const playerNumber = Math.floor(Math.random() * listPlayers.length);
+      if (
+        !matchPlayers.find((element) => element === listPlayers[playerNumber])
+      ) {
+        matchPlayers.push(listPlayers[playerNumber]);
+      } else {
+        j--;
+      }
+    }
+  }
+  return matchPlayers;
+};
