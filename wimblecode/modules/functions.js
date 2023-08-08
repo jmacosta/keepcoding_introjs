@@ -144,17 +144,35 @@ export function createMatch(player_1, player_2, settings = settingsDefault) {
 
 export const playOff = (listPlayers) => {
   const matchPlayers = [];
-  for (let i = 0; i < listPlayers.length / 2; i++) {
-    for (let j = 0; j < 2; j++) {
-      const playerNumber = Math.floor(Math.random() * listPlayers.length);
-      if (
-        !matchPlayers.find((element) => element === listPlayers[playerNumber])
-      ) {
-        matchPlayers.push(listPlayers[playerNumber]);
-      } else {
-        j--;
-      }
+  for (let j = 0; j < 2; j++) {
+    const playerNumber = Math.floor(Math.random() * listPlayers.length);
+    if (
+      !matchPlayers.find((element) => element === listPlayers[playerNumber])
+    ) {
+      matchPlayers.push(listPlayers[playerNumber]);
+    } else {
+      j--;
     }
   }
   return matchPlayers;
+};
+
+export const initPlayers = (listPlayers) => {
+  const players = [];
+  listPlayers.forEach((element, index) => {
+    players.push({ id: index, name: element, winnerMatch: null });
+  });
+  return players;
+};
+
+export const hasAnyNull = (allPlayers) => {
+  return (
+    allPlayers.filter((element) => element.winnerMatch === null).length > 0
+  );
+};
+
+export const hasOnlyOneWinner = (allPlayers) => {
+  return (
+    allPlayers.filter((element) => element.winnerMatch === true).length === 1
+  );
 };
