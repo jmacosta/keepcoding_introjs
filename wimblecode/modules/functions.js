@@ -32,9 +32,7 @@ export function createMatch(player_1, player_2, settings = settingsDefault) {
         }
         currentRoundScore = `${players.id_1.name} ${
           scoreSystem[players.id_1.roundScore]
-        } - ${players.id_2.name} ${
-          scoreSystem[players.id_2.roundScore]
-        } la scores es ${players["id_" + playerId].roundScore}`;
+        } - ${players.id_2.name} ${scoreSystem[players.id_2.roundScore]}`;
         return;
       }
 
@@ -121,10 +119,10 @@ export function createMatch(player_1, player_2, settings = settingsDefault) {
     return currentRoundScore;
   };
   const getGameScore = () => {
-    return `${players.id_1.name} ${players.id_1.gameScore}\n ${players.id_2.name} ${players.id_2.gameScore}`;
+    return `${players.id_1.name} ${players.id_1.gameScore} ${players.id_2.name} ${players.id_2.gameScore}`;
   };
   const getMatchScore = () => {
-    return `${players.id_1.name} ${players.id_1.matchScore}\n ${players.id_2.name} ${players.id_2.matchScore}`;
+    return `${players.id_1.name} ${players.id_1.matchScore} ${players.id_2.name} ${players.id_2.matchScore}`;
   };
   const getWinner = () => {
     return winner;
