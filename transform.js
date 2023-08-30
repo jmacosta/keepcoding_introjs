@@ -33,6 +33,26 @@ const datos = [
   },
 ];
 
+const desarrolladoresJavascript = datos.filter((dato) =>
+  dato.habilidades.includes("JavaScript")
+);
+
+console.log(desarrolladoresJavascript);
+
+function projectExtractor(data) {
+  const projects = [];
+  for (let i = 0; i < data.length; i++) {
+    for (let j = 0; j < data[i].proyectos.length; j++) {
+      projects.push(data[i].proyectos[j].nombre);
+    }
+  }
+  return projects;
+}
+
+const nombresProyectos = projectExtractor(datos);
+
+console.log(nombresProyectos);
+
 /* resultado final esperado 
 
 
